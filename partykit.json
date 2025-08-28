@@ -1,6 +1,6 @@
 {
   "$schema": "https://www.partykit.io/schema.json",
-  "name": "audio-share",
+  "name": "partysocket-io",
   "main": "src/server.ts",
   "compatibilityDate": "2025-08-27",
   "serve": {

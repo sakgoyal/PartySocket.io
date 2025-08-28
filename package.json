@@ -1,7 +1,6 @@
 {
-  "name": "audio-share-pk",
-  "version": "0.0.0",
-  "private": true,
+  "name": "partysocket.io",
+  "version": "0.0.1",
   "scripts": {
     "dev": "partykit dev --live",
     "deploy": "partykit deploy"

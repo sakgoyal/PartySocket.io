@@ -8,9 +8,8 @@ body {
   gap: 1rem;
   font-family: sans-serif;
   padding: 1rem;
-  max-width: 800px;
+  max-width: 80%;
   margin: auto;
-  line-height: 1.5;
 }
 
 #clients-list {
@@ -18,37 +17,4 @@ body {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-}
-
-.row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border: 1px solid #ccc;
-  padding: 0.5rem;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.client-row {
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.client-row:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.client-row.playing {
-  border-color: #4caf50;
-  background-color: rgba(76, 175, 80, 0.1);
-}
-
-.row h2 {
-  margin: 0;
-  font-size: 1.2rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  padding-right: 1rem;
 }

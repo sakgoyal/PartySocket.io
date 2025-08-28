@@ -5,7 +5,7 @@ export default class Server implements Party.Server {
 
   onConnect() {
     const clients = Array.from(this.room.getConnections()).map(c => c.id);
-    this.broadcastJSON("clientList", { clients });
+    this.broadcast("clientList", { clients });
   }
 
   async onRequest(req: Party.Request) {
@@ -27,21 +27,21 @@ export default class Server implements Party.Server {
   }
 
   onMessage(message: string, sender: Party.Connection) {
-    const data = JSON.parse(message);
+    const data: {type: keyof ClientToServerEvents} & ClientToServerEvents[keyof ClientToServerEvents] = JSON.parse(message);
     console.log(data);
     // broadcast to everyone in the room except the sender
-    if (data.broadcast) {
+    if ('broadcast' in data) {
       const { broadcast: _, ...rest } = data;
-      this.broadcastJSON(rest, [sender.id]);
+      this.broadcast(rest.type, rest, [sender.id]);
       return;
     }
   }
   onClose(conn: Party.Connection) {
     const clients = Array.from(this.room.getConnections()).map(c => c.id)
-    this.broadcastJSON("clientList", { clients });
+    this.broadcast("clientList", { clients });
   }
 
-  broadcastJSON<T extends keyof ServerToClientEvents>(type: T, obj: ServerToClientEvents[T], excludeIDs?: string[]): void {
+  broadcast<T extends keyof ServerToClientEvents>(type: T, obj: ServerToClientEvents[T], excludeIDs: string[] = []): void {
     this.room.broadcast(JSON.stringify({ type, ...obj }), excludeIDs);
   }
 }

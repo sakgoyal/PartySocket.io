@@ -3,13 +3,13 @@ import "./styles.css";
 import PartySocketBase from "partysocket";
 
 function setupPassword() {
-  while (!localStorage.getItem("groupID")) {
-    const val = prompt("Enter a complicated password:");
-    if (val) localStorage.setItem("groupID", val);
+  while (!localStorage.getItem("roomID")) {
+    const val = prompt("Enter a room ID:");
+    if (val) localStorage.setItem("roomID", val);
   }
-  return localStorage.getItem("groupID")!;
+  return localStorage.getItem("roomID")!;
 }
-const groupID = setupPassword();
+const room = setupPassword();
 
 class PartySocket extends PartySocketBase {
   registedEvents = new Map<string, (args: ServerToClientEvents[T]) => void>();
@@ -31,9 +31,6 @@ class PartySocket extends PartySocketBase {
     }
   };
 
-  broadcast = <T extends keyof ClientToServerEvents>(event: T, args: ClientToServerEvents[T]) => {
-    this.send(JSON.stringify({ event, args, }));
-  };
   storage = {
     get: async <T>(key: string, defaultValue?: T) => {
       const resp = await PartySocket.fetch({host: this.host, room: this.room!, path: `/storage/${key}`})
@@ -53,7 +50,7 @@ class PartySocket extends PartySocketBase {
   };
 }
 
-const conn = new PartySocket({ host: PARTYKIT_HOST, room: groupID });
+const conn = new PartySocket({ host: PARTYKIT_HOST, room });
 
 conn.on("clientList", ({ clients }) => { renderClientList(clients) });
 
@@ -66,9 +63,7 @@ function renderClientList(clients: string[]) {
   clientsList.innerHTML = `<div id="${conn.id}">You: ${conn.id}</div>`;
 
   clients.forEach(clientID => {
-    if (clientID === conn.id) return; // skip self
+    if (clientID === conn.id) return;
     clientsList.innerHTML += `<div id="${clientID}">${clientID}</div>`;
   });
 }
-
-window.PartySocket = PartySocketBase;
