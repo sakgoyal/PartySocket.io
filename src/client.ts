@@ -13,7 +13,7 @@ const room = setupPassword();
 
 class PartySocket extends PartySocketBase {
   registedEvents = new Map<string, (args: ServerToClientEvents[T]) => void>();
-  sendObject = <T extends keyof ClientToServerEvents>(type: T, args: ClientToServerEvents[T]) => {
+  sendObj = <T extends keyof ClientToServerEvents>(type: T, args: ClientToServerEvents[T]) => {
     this.send(JSON.stringify({ type, ...args }));
   };
 
@@ -55,7 +55,6 @@ const conn = new PartySocket({ host: PARTYKIT_HOST, room });
 conn.on("clientList", ({ clients }) => { renderClientList(clients) });
 
 const clientsList = document.getElementById("clients-list") as HTMLDivElement;
-
 
 function renderClientList(clients: string[]) {
   clientsList.innerHTML = "";
